@@ -13,7 +13,6 @@ public class Person {
 
     @Min(value = 1900, message = "No less than 1900")
     @Max(value = 2025, message = "No more than this year")
-    @Pattern(regexp = "\\d{4}", message = "Enter year of birthday (4 digital)")
     private int personYearOfBirth;
 
     public Person() {}

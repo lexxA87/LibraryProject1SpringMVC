@@ -39,7 +39,7 @@ public class BookController {
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("person") @Valid Book book,
+    public String create(@ModelAttribute("book") @Valid Book book,
                          BindingResult bindingResult) {
         if(bindingResult.hasErrors())
             return "books/new";
@@ -55,7 +55,7 @@ public class BookController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("person") @Valid Book book,
+    public String update(@ModelAttribute("book") @Valid Book book,
                          BindingResult bindingResult,
                          @PathVariable("id") int id) {
         if(bindingResult.hasErrors())
