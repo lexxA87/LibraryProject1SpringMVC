@@ -2,8 +2,13 @@ package com.library.models;
 
 import jakarta.validation.constraints.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Book {
     private int book_id;
+    private Person person = null;
+    private List<Person> people = new ArrayList<>();
 
     @Pattern(regexp = "[A-Z]\\w*(\\s\\w+)*", message = "Big char first and no more 100 chars")
     private String bookTitle;
@@ -56,10 +61,28 @@ public class Book {
         this.bookYear = bookYear;
     }
 
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public List<Person> getPeople() {
+        return people;
+    }
+
+    public void setPeople(List<Person> people) {
+        this.people = people;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
                 "book_id=" + book_id +
+                ", person=" + person +
+                ", people=" + people +
                 ", bookTitle='" + bookTitle + '\'' +
                 ", bookAuthor='" + bookAuthor + '\'' +
                 ", bookYear=" + bookYear +

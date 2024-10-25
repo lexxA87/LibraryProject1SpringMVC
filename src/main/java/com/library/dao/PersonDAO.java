@@ -38,6 +38,11 @@ public class PersonDAO {
         return person;
     }
 
+    public Person getById(int id) {
+        return jdbcTemplate.queryForObject("SELECT * FROM person WHERE person_id=?",
+                new BeanPropertyRowMapper<>(Person.class), id);
+    }
+
     public void save(Person person) {
         jdbcTemplate.update("INSERT INTO person(personName, personYearOfBirth) VALUES(?, ?)",
                 person.getPersonName(), person.getPersonYearOfBirth());
