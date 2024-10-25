@@ -4,6 +4,9 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Person {
     private int person_id;
 
@@ -14,6 +17,8 @@ public class Person {
     @Min(value = 1900, message = "No less than 1900")
     @Max(value = 2025, message = "No more than this year")
     private int personYearOfBirth;
+
+    private List<Book> books = new ArrayList<>();
 
     public Person() {}
 
@@ -40,5 +45,23 @@ public class Person {
     }
     public void setPersonYearOfBirth(int personYearOfBirth) {
         this.personYearOfBirth = personYearOfBirth;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "person_id=" + person_id +
+                ", personName='" + personName + '\'' +
+                ", personYearOfBirth=" + personYearOfBirth +
+                ", books=" + books +
+                '}';
     }
 }

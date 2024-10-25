@@ -14,5 +14,8 @@
 <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getPerson_id()})}">
     <input type="submit" value="Delete"/>
 </form>
+<hr/>
+<a href="/people"><button>Go to people list</button></a>
+<a href="/books"><button>Go to books list</button></a>
 </body>
 </html>

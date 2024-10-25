@@ -1,5 +1,6 @@
 package com.library.dao;
 
+import com.library.models.Book;
 import com.library.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -27,8 +28,14 @@ public class PersonDAO {
 //        return jdbcTemplate.query("SELECT * FROM person WHERE person_id=?",
 //                        new Object[]{id}, new BeanPropertyRowMapper<>(Person.class)).
 //                stream().findFirst().orElse(null);
-        return jdbcTemplate.queryForObject("SELECT * FROM person WHERE person_id=?",
+        List<Book> books = jdbcTemplate.query("SELECT * FROM book WHERE person_id = ?",
+                new BeanPropertyRowMapper<>(Book.class), id);
+        Person person = jdbcTemplate.queryForObject("SELECT * FROM person WHERE person_id=?",
                 new BeanPropertyRowMapper<>(Person.class), id);
+        assert person != null;
+        person.setBooks(books);
+        //System.out.println(person);
+        return person;
     }
 
     public void save(Person person) {
