@@ -5,10 +5,10 @@ import jakarta.validation.constraints.*;
 public class Book {
     private int book_id;
 
-    @Pattern(regexp = "[A-Z]\\w+", message = "Big char first and no more 100 chars")
+    @Pattern(regexp = "[A-Z]\\w*(\\s\\w+)*", message = "Big char first and no more 100 chars")
     private String bookTitle;
 
-    @Pattern(regexp = "[A-Z]\\w+", message = "Big char first and no more 100 chars")
+    @Pattern(regexp = "[A-Z]\\w*(\\s\\w+)*", message = "Big char first and no more 100 chars")
     private String bookAuthor;
 
     @Min(value = -5000, message = "No less than -5000")
