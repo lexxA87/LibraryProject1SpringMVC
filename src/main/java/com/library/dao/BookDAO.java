@@ -41,14 +41,11 @@ public class BookDAO {
                 Integer.class, id);
         assert book != null;
         if(person_id != null) {
-            System.out.println(person_id);
             person = personDAO.getById(person_id);
             book.setPerson(person);
         }
 
         book.setPeople(people);
-        System.out.println(person);
-        System.out.println(book);
         return book;
     }
 
@@ -60,6 +57,14 @@ public class BookDAO {
     public void update(int id, Book updatedBook) {
         jdbcTemplate.update("UPDATE book SET bookTitle=?, bookAuthor=?, bookYear=? WHERE book_id=?",
                 updatedBook.getBookTitle(), updatedBook.getBookAuthor(), updatedBook.getBookYear(), id);
+    }
+
+    public void updatePersonIdToNull(int id) {
+        jdbcTemplate.update("UPDATE book SET person_id=null WHERE book_id=?", id);
+    }
+
+    public void updatePersonId(int id, int person_id) {
+        jdbcTemplate.update("UPDATE book SET person_id=? WHERE book_id=?", person_id, id);
     }
 
     public void delete(int id) {

@@ -6,6 +6,28 @@
 </head>
 <body>
 <h1 th:text="${book.getBookTitle() + ', '+ book.getBookAuthor() + ', ' + book.getBookYear()}">VALUE</h1>
+<br/>
+
+<div th:if="${book.getPerson() == null}">
+    <h3>This book is free now. Who should this book be assigned to?</h3>
+    <form th:method="PATCH" th:action="@{/books/{id}/editPersonId(id=${book.getBook_id()})}">
+        <label for="people">Choose a person: </label>
+        <select name="person_id" id="people">
+            <option th:each="person : ${book.getPeople()}"
+                    th:value="${person.getPerson_id()}"
+                    th:text="${person.getPersonName()}">VALUE</option>
+        </select>
+        <input type="submit" value="Select">
+    </form>
+</div>
+
+<div th:if="${book.getPerson() != null}">
+    <h3 th:text="'The book is now with: ' + ${book.getPerson().getPersonName()}"></h3>
+    <form th:method="PATCH" th:action="@{/books/{id}/editPersonIdToNull(id=${book.getBook_id()})}">
+        <input type="submit" value="Make the book free"/>
+    </form>
+</div>
+
 <hr/>
 <a th:href="@{/books/{id}/edit(id=${book.getBook_id()})}">
     <button>Edit</button>
