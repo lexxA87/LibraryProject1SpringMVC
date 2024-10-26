@@ -6,6 +6,15 @@
 </head>
 <body>
 <h1 th:text="${person.getPersonName() + ', ' + person.getPersonYearOfBirth()}">VALUE</h1>
+
+<h3 th:if="${person.getBooks().size() == 0}">This person has not taken any books yet</h3>
+<diV th:if="${person.getBooks().size() > 0}">
+    <h3>Books:</h3>
+    <ul th:each="book : ${person.getBooks()}">
+        <li th:text="${book.getBookTitle()} + ', ' + ${book.getBookAuthor()}
+         + ', ' + ${book.getBookYear()}" style="font-weight: bold">VALUE</li>
+    </ul>
+</diV>
 <hr/>
 <a th:href="@{/people/{id}/edit(id=${person.getPerson_id()})}">
     <button>Edit</button>

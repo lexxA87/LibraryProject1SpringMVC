@@ -34,7 +34,7 @@ public class PersonDAO {
                 new BeanPropertyRowMapper<>(Person.class), id);
         assert person != null;
         person.setBooks(books);
-        //System.out.println(person);
+        System.out.println(person);
         return person;
     }
 
