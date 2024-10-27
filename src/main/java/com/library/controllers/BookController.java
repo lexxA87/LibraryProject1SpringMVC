@@ -1,6 +1,7 @@
 package com.library.controllers;
 
 import com.library.dao.BookDAO;
+import com.library.dao.PersonDAO;
 import com.library.models.Book;
 import com.library.models.Person;
 import jakarta.validation.Valid;
@@ -10,15 +11,19 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/books")
 public class BookController {
 
     private final BookDAO bookDAO;
+    private final PersonDAO personDAO;
 
     @Autowired
-    public BookController(BookDAO bookDAO) {
+    public BookController(BookDAO bookDAO, PersonDAO personDAO) {
         this.bookDAO = bookDAO;
+        this.personDAO = personDAO;
     }
 
     @GetMapping()
@@ -28,8 +33,15 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
+    public String show(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
         model.addAttribute("book", bookDAO.show(id));
+
+        Optional<Person> bookOwner = bookDAO.getBookOwner(id);
+        if (bookOwner.isPresent()) {
+            model.addAttribute("bookOwner", bookOwner.get());
+        } else {
+            model.addAttribute("people", personDAO.index());
+        }
         return "books/show";
     }
 
@@ -65,18 +77,16 @@ public class BookController {
     }
 
     @PatchMapping("/{id}/editPersonIdToNull")
-    public String editPersonIdToNull(Model model, @PathVariable("id") int id) {
+    public String editPersonIdToNull(@PathVariable("id") int id) {
         bookDAO.updatePersonIdToNull(id);
-        model.addAttribute("book", bookDAO.show(id));
-        return "books/show";
+        return "redirect:/books/" + id;
     }
 
     @PatchMapping("/{id}/editPersonId")
-    public String editPersonId(Model model, @RequestParam("person_id") int person_id,
+    public String editPersonId(@ModelAttribute("person") Person person,
                                @PathVariable("id") int id) {
-        bookDAO.updatePersonId(id, person_id);
-        model.addAttribute("book", bookDAO.show(id));
-        return "books/show";
+        bookDAO.updatePersonId(id, person.getPerson_id());
+        return "redirect:/books/" + id;
     }
 
     @DeleteMapping("/{id}")

@@ -7,8 +7,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class BookDAO {
@@ -24,29 +24,25 @@ public class BookDAO {
 
     public List<Book> index() {
         return jdbcTemplate.query("SELECT * FROM book",
-                new BeanPropertyRowMapper<Book>(Book.class));
+                new BeanPropertyRowMapper<>(Book.class));
+    }
+
+    public List<Book> getBooksByPersonId(int personId) {
+        return jdbcTemplate.query("SELECT * FROM book WHERE person_id = ?",
+                new BeanPropertyRowMapper<>(Book.class), personId);
     }
 
     public Book show(int id) {
-        Person person = null;
 
-        List<Person> people = new ArrayList<>();
-        people = personDAO.index();
-
-
-        Book book = jdbcTemplate.queryForObject("SELECT * FROM book WHERE book_id=?",
+        return jdbcTemplate.queryForObject("SELECT * FROM book WHERE book_id=?",
                 new BeanPropertyRowMapper<>(Book.class), id);
-        
-        Integer person_id = jdbcTemplate.queryForObject("SELECT person_id FROM book WHERE book_id=?",
-                Integer.class, id);
-        assert book != null;
-        if(person_id != null) {
-            person = personDAO.getById(person_id);
-            book.setPerson(person);
-        }
 
-        book.setPeople(people);
-        return book;
+    }
+
+    public Optional<Person> getBookOwner(int id) {
+        return jdbcTemplate.query("SELECT person.* FROM book JOIN person" +
+                        " ON book.person_id = person.person_id WHERE book_id = ?", new Object[]{id},
+                new BeanPropertyRowMapper<>(Person.class)).stream().findAny();
     }
 
     public void save(Book book) {

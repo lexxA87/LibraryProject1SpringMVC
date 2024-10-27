@@ -21,20 +21,12 @@ public class PersonDAO {
 
     public List<Person> index() {
         return jdbcTemplate.query("SELECT * FROM person",
-                new BeanPropertyRowMapper<Person>(Person.class));
+                new BeanPropertyRowMapper<>(Person.class));
     }
 
     public Person show(int id) {
-//        return jdbcTemplate.query("SELECT * FROM person WHERE person_id=?",
-//                        new Object[]{id}, new BeanPropertyRowMapper<>(Person.class)).
-//                stream().findFirst().orElse(null);
-        List<Book> books = jdbcTemplate.query("SELECT * FROM book WHERE person_id = ?",
-                new BeanPropertyRowMapper<>(Book.class), id);
-        Person person = jdbcTemplate.queryForObject("SELECT * FROM person WHERE person_id=?",
+        return jdbcTemplate.queryForObject("SELECT * FROM person WHERE person_id=?",
                 new BeanPropertyRowMapper<>(Person.class), id);
-        assert person != null;
-        person.setBooks(books);
-        return person;
     }
 
     public Person getById(int id) {

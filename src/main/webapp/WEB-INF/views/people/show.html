@@ -7,10 +7,10 @@
 <body>
 <h1 th:text="${person.getPersonName() + ', ' + person.getPersonYearOfBirth()}">VALUE</h1>
 
-<h3 th:if="${person.getBooks().size() == 0}">This person has not taken any books yet</h3>
-<diV th:if="${person.getBooks().size() > 0}">
+<h3 th:if="${books.isEmpty()}">This person has not taken any books yet</h3>
+<diV th:if="${!books.isEmpty()}">
     <h3>Books:</h3>
-    <ul th:each="book : ${person.getBooks()}">
+    <ul th:each="book : ${books}">
         <li th:text="${book.getBookTitle()} + ', ' + ${book.getBookAuthor()}
          + ', ' + ${book.getBookYear()}" style="font-weight: bold">VALUE</li>
     </ul>
